@@ -68,9 +68,14 @@ const handler = async function (request: Request) {
 		return new Response("Method Not Allowed", { status: 405 })
 	}
 
-	const { query } = (await request.json()) as { query: string }
+	const { messages } = (await request.json()) as { messages: string[] }
 
-	if (!query) {
+	if (
+		!messages ||
+		!(messages instanceof Array) ||
+		messages.some((message) => typeof message !== "string") ||
+		messages[0] === undefined
+	) {
 		return new Response("Bad request", { status: 400 })
 	}
 
@@ -87,9 +92,14 @@ const handler = async function (request: Request) {
 						{ role: "system", content: "You are interesting and sensational." },
 						{
 							role: "user",
-							content: `Respond with something that sounds like it could be found in an article from Maria Carrillo High's school newspaper "The Puma Prensa" that would answer the following question:
+							content:
+								messages.length === 1
+									? `Respond with something that sounds like it could be found in an article from Maria Carrillo High's school newspaper "The Puma Prensa" that would answer the following question:
 
-${query}`,
+${messages[0]}`
+									: `Respond with something that sounds like it could be found in an article from Maria Carrillo High's school newspaper "The Puma Prensa" that would answer the final question in the following:
+
+${messages.join("\n\n")}`,
 						},
 					],
 					model: "gpt-3.5-turbo",
@@ -126,9 +136,16 @@ ${query}`,
 
 		articles.push(article)
 	}
-	console.debug(predictedAnswer)
-	console.debug(articlesUnfiltered.map((article) => article.title).join("|"), "\n")
-	console.debug(articles.map((article) => article.title).join("|"))
+
+	const articlesString = articles
+		.map(
+			(article) =>
+				`${article.title}${
+					article.dateString !== "" ? `\n\nFeatured on ${article.dateString}` : ""
+				}\n\n${article.credits}\n\n${article.content}`
+		)
+		.join("\n\n")
+
 	const response = await fetch("https://api.openai.com/v1/chat/completions", {
 		method: "POST",
 		headers: {
@@ -136,28 +153,40 @@ ${query}`,
 			Authorization: `Bearer ${env.OPENAI_SECRET_KEY}`,
 		},
 		body: JSON.stringify({
-			messages: [
-				{ role: "system", content: "You are helpful and accurate." },
-				{
-					role: "user",
-					content: `Some relevant articles from Maria Carrillo High's school newspaper, "The Puma Prensa":
+			messages:
+				messages.length === 1
+					? [
+							{ role: "system", content: "You are helpful and accurate." },
+							{
+								role: "user",
+								content: `Some relevant articles from Maria Carrillo High's school newspaper, "The Puma Prensa":
 
-${articles
-	.map(
-		(article) =>
-			`${article.title}${
-				article.dateString !== "" ? `\n\nFeatured on ${article.dateString}` : ""
-			}\n\n${article.credits}\n\n${article.content}`
-	)
-	.join("\n\n")}
+${articlesString}
 
 Use these articles to respond to the following:
 
-${query}
+${messages[0]}
 
-Cite specific articles. Phrase your responses very interestingly, as though you are very knowledgable about Maria Carrillo High.`,
-				},
-			],
+Cite specific articles. Phrase your responses very interestingly, including much detail, as though you are very knowledgable about Maria Carrillo High.`,
+							},
+					  ]
+					: [
+							{ role: "system", content: "You are helpful and accurate." },
+							{
+								role: "user",
+								content: `Some relevant articles from Maria Carrillo High's school newspaper, "The Puma Prensa":
+
+${articlesString}
+
+Use these articles for the conversation that follows. Cite specific articles. Phrase your responses very interestingly, including much detail, as though you are very knowledgable about Maria Carrillo High. Here's the user's first message:
+
+${messages[0]}`,
+							},
+							...messages.slice(1).map((message, index) => ({
+								role: index % 2 === 0 ? "assistant" : "user",
+								content: message,
+							})),
+					  ],
 			model: "gpt-3.5-turbo",
 			temperature: 0,
 			stream: true,
@@ -169,6 +198,8 @@ Cite specific articles. Phrase your responses very interestingly, as though you 
 			start: async (controller) => {
 				if (response.body) {
 					const reader = response.body.getReader()
+
+					let streamedContent = ""
 
 					let previousIncompleteChunk: Uint8Array | undefined = undefined
 
@@ -205,12 +236,26 @@ Cite specific articles. Phrase your responses very interestingly, as though you 
 										const contentDelta = JSON.parse(part).choices[0].delta
 											.content as string | undefined
 
+										streamedContent += contentDelta ?? ""
+
 										controller.enqueue(textEncoder.encode(contentDelta))
 									} catch (error) {
 										previousIncompleteChunk = chunk
 									}
 								} else {
 									controller.close()
+
+									console.log("Messages: ", messages)
+									console.log("Response: ", streamedContent)
+									console.log("Predicted response: ", predictedAnswer)
+									console.log(
+										"Unfiltered articles: ",
+										articlesUnfiltered.map((article) => article.title)
+									)
+									console.log(
+										"Articles: ",
+										articles.map((article) => article.title)
+									)
 
 									return
 								}

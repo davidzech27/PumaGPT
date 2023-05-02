@@ -22,11 +22,11 @@ const NoSSR: FC<{ children: ReactElement }> = ({ children }) => {
 }
 
 const getBotMessage = async ({
-	input,
+	messages,
 	onContent,
 	onFinish,
 }: {
-	input: string
+	messages: string[]
 	onContent: (content: string) => void
 	onFinish: () => void
 }) => {
@@ -34,7 +34,7 @@ const getBotMessage = async ({
 		method: "POST",
 		body: textEncoder.encode(
 			JSON.stringify({
-				query: input,
+				messages,
 			})
 		),
 	})
@@ -81,7 +81,7 @@ const Home: NextPage = () => {
 		scrollerRef.current?.scroll({ top: scrollerRef.current.scrollHeight })
 
 		void getBotMessage({
-			input: messageInput,
+			messages: messages.concat(messageInput),
 			onContent: (content) => {
 				setMessages((messages) => [
 					...messages.slice(0, generatingIndex),
