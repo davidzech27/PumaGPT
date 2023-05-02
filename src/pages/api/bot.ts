@@ -87,7 +87,7 @@ const handler = async function (request: Request) {
 						{ role: "system", content: "You are interesting and sensational." },
 						{
 							role: "user",
-							content: `Respond with something that sounds like it could be found within Maria Carrillo High's school newspaper "The Puma Prensa" that would answer the following question:
+							content: `Respond with something that sounds like it could be found in an article from Maria Carrillo High's school newspaper "The Puma Prensa" that would answer the following question:
 
 ${query}`,
 						},
@@ -126,7 +126,9 @@ ${query}`,
 
 		articles.push(article)
 	}
-
+	console.debug(predictedAnswer)
+	console.debug(articlesUnfiltered.map((article) => article.title).join("|"), "\n")
+	console.debug(articles.map((article) => article.title).join("|"))
 	const response = await fetch("https://api.openai.com/v1/chat/completions", {
 		method: "POST",
 		headers: {
@@ -149,11 +151,11 @@ ${articles
 	)
 	.join("\n\n")}
 
-Use these articles to respond in depth to a user:
+Use these articles to respond to the following:
 
 ${query}
 
-Cite specific articles. Phrase your responses interestingly, as though you are very knowledgable about Maria Carrillo High.`,
+Cite specific articles. Phrase your responses very interestingly, as though you are very knowledgable about Maria Carrillo High.`,
 				},
 			],
 			model: "gpt-3.5-turbo",
