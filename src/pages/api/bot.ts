@@ -104,6 +104,7 @@ ${messages.join("\n\n")}`,
 					],
 					model: "gpt-3.5-turbo",
 					temperature: 0,
+					max_tokens: 200,
 				}),
 			})
 		).json()) as { choices: [{ message: { content: string } }] }
@@ -125,7 +126,7 @@ ${messages.join("\n\n")}`,
 
 	const articles: typeof articlesUnfiltered = []
 
-	const wordLimit = 2400
+	const wordLimit = messages.length === 1 ? 3000 : 2400
 
 	let words = 0
 
@@ -178,7 +179,7 @@ Cite specific articles. Phrase your responses very interestingly, including much
 
 ${articlesString}
 
-Use these articles for the conversation that follows. Cite specific articles. Phrase your responses very interestingly, including much detail, as though you are very knowledgable about Maria Carrillo High. Here's the user's first message:
+Use these articles for the conversation that follows. Cite specific articles. Be transparent when you can't find information on a particular topic. Phrase your responses very interestingly, including much detail, as though you are very knowledgable about Maria Carrillo High. Here's the user's first message:
 
 ${messages[0]}`,
 							},
