@@ -147,6 +147,8 @@ ${messages.join("\n\n")}`,
 		)
 		.join("\n\n")
 
+	const dateString = new Date().toDateString().split(" ").slice(1).join(" ")
+
 	const response = await fetch("https://api.openai.com/v1/chat/completions", {
 		method: "POST",
 		headers: {
@@ -159,11 +161,13 @@ ${messages.join("\n\n")}`,
 					? [
 							{
 								role: "system",
-								content: `You are helpful and accurate. The current date is ${new Date().toDateString()}.`,
+								content: `You are helpful and accurate.`,
 							},
 							{
 								role: "user",
-								content: `Some relevant articles from Maria Carrillo High's school newspaper, "The Puma Prensa":
+								content: `The date is ${dateString}.
+
+Here are some relevant articles from Maria Carrillo High's school newspaper, "The Puma Prensa":
 
 ${articlesString}
 
@@ -171,21 +175,23 @@ Use these articles to respond to the following:
 
 ${messages[0]}
 
-Cite specific articles. Phrase your responses very interestingly, including much detail, as though you are very knowledgable about Maria Carrillo High.`,
+Cite specific articles, including their authors. Phrase your responses very interestingly, including much detail, as though you are very knowledgable about Maria Carrillo High.`,
 							},
 					  ]
 					: [
 							{
 								role: "system",
-								content: `You are helpful and accurate. The current date is ${new Date().toDateString()}.`,
+								content: `You are helpful and accurate. The current date is ${dateString}.`,
 							},
 							{
 								role: "user",
-								content: `Some relevant articles from Maria Carrillo High's school newspaper, "The Puma Prensa":
+								content: `The date is ${dateString}.
+
+Here are some relevant articles from Maria Carrillo High's school newspaper, "The Puma Prensa":
 
 ${articlesString}
 
-Use these articles for the conversation that follows. Cite specific articles. Be transparent when you can't find information on a particular topic. Phrase your responses very interestingly, including much detail, as though you are very knowledgable about Maria Carrillo High. Here's the user's first message:
+Use these articles to continue the conversation that follows. Cite specific articles, including their authors. Be transparent when you can't find information on a particular topic. Phrase your responses very interestingly, including much detail, as though you are very knowledgable about Maria Carrillo High. Here's the user's first message:
 
 ${messages[0]}`,
 							},
@@ -264,6 +270,7 @@ ${messages[0]}`,
 										articles.map((article) => article.title)
 									)
 									console.log("Articles string: ", articlesString)
+									console.log("Date string: ", dateString)
 
 									return
 								}
