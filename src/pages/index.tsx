@@ -143,13 +143,7 @@ const Home: NextPage = () => {
 							} flex items-center justify-center`}
 						>
 							<div
-								style={{
-									background: "linear-gradient(to right, #97ff52, #f6fa00)",
-									WebkitBackgroundClip: "text",
-									backgroundClip: "text",
-									color: "transparent",
-								}}
-								className={`relative cursor-default select-none text-center text-[8px] font-semibold md:text-xl ${
+								className={`relative cursor-default text-center text-[8px] font-semibold md:text-xl ${
 									typeof navigator !== "undefined" &&
 									navigator.userAgent.includes("Safari") &&
 									!navigator.userAgent.includes("Chrome") &&
@@ -161,7 +155,20 @@ const Home: NextPage = () => {
 										: "top-[0.25vh]"
 								}`}
 							>
-								PumaGPT can answer questions about Maria Carrillo High
+								PumaGPT uses the{" "}
+								<a
+									href="https://thepumaprensa.org"
+									className="underline underline-offset-1 transition-all duration-150 hover:opacity-80 active:opacity-80" // underline not working. perhaps solve this through other means if really necessary
+									style={{
+										background: "linear-gradient(to right, #97ff52, #f6fa00)",
+										WebkitBackgroundClip: "text",
+										backgroundClip: "text",
+										color: "transparent",
+									}}
+								>
+									Puma Prensa
+								</a>{" "}
+								to answer questions about Maria Carrillo High
 							</div>
 						</div>
 					</NoSSR>
@@ -230,12 +237,22 @@ const Home: NextPage = () => {
 					</div>
 					<footer>
 						<div className="flex h-[7vh] items-center justify-center pb-[0.6vh]">
-							<a
-								href={`mailto:${env.NEXT_PUBLIC_CONTACT_EMAIL}`}
-								className="text-xl font-semibold underline underline-offset-1 opacity-70 transition-all duration-150 hover:opacity-100 active:opacity-100"
-							>
-								Say hello
-							</a>
+							<div className="text-center text-[8px] font-semibold md:text-lg">
+								<span className="opacity-70">
+									We&apos;re currently in an{" "}
+									<span className="underline underline-offset-1">
+										experimental phase
+									</span>
+									. Contact us{" "}
+								</span>
+								<a
+									href={`mailto:${env.NEXT_PUBLIC_CONTACT_EMAIL}`}
+									className="underline underline-offset-1 opacity-70 transition-all duration-150 hover:opacity-100 active:opacity-100"
+								>
+									here
+								</a>{" "}
+								<span className="opacity-70">if you encounter any issues.</span>
+							</div>
 						</div>
 					</footer>
 				</div>

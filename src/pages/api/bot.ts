@@ -157,7 +157,10 @@ ${messages.join("\n\n")}`,
 			messages:
 				messages.length === 1
 					? [
-							{ role: "system", content: "You are helpful and accurate." },
+							{
+								role: "system",
+								content: `You are helpful and accurate. The current date is ${new Date().toDateString()}.`,
+							},
 							{
 								role: "user",
 								content: `Some relevant articles from Maria Carrillo High's school newspaper, "The Puma Prensa":
@@ -172,7 +175,10 @@ Cite specific articles. Phrase your responses very interestingly, including much
 							},
 					  ]
 					: [
-							{ role: "system", content: "You are helpful and accurate." },
+							{
+								role: "system",
+								content: `You are helpful and accurate. The current date is ${new Date().toDateString()}.`,
+							},
 							{
 								role: "user",
 								content: `Some relevant articles from Maria Carrillo High's school newspaper, "The Puma Prensa":
@@ -257,6 +263,7 @@ ${messages[0]}`,
 										"Articles: ",
 										articles.map((article) => article.title)
 									)
+									console.log("Articles string: ", articlesString)
 
 									return
 								}

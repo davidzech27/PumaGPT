@@ -166,7 +166,7 @@ const main = async () => {
 
 		const credits = $("strong").first().text()
 
-		const content = $(".sqs-block-content > p")
+		const content = $(".sqs-html-content > p") // this class has changed before. be wary before running this script
 			.map((_index, element) => $(element).text().trim())
 			.toArray()
 			.filter(
@@ -174,7 +174,7 @@ const main = async () => {
 					paragraph !== "" &&
 					!paragraph.includes("Photo: ") &&
 					paragraph !== credits &&
-					paragraph !== "Made with Squarespace"
+					paragraph !== "Made with Squarespace" // some of these filters are no longer necessary but I'll keep them
 			)
 			.join("\n\n")
 
