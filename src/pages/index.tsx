@@ -143,7 +143,7 @@ const Home: NextPage = () => {
 							} flex items-center justify-center`}
 						>
 							<div
-								className={`relative cursor-default text-center text-[8px] font-semibold md:text-xl ${
+								className={`relative cursor-default px-2 text-center text-xs font-semibold md:text-xl ${
 									typeof navigator !== "undefined" &&
 									navigator.userAgent.includes("Safari") &&
 									!navigator.userAgent.includes("Chrome") &&
@@ -237,7 +237,7 @@ const Home: NextPage = () => {
 					</div>
 					<footer>
 						<div className="flex h-[7vh] items-center justify-center pb-[0.6vh]">
-							<div className="text-center text-[8px] font-semibold md:text-lg">
+							<div className="px-2 text-center text-[10px] font-semibold md:text-lg">
 								<span className="opacity-70">
 									We&apos;re currently in an{" "}
 									<span className="underline underline-offset-1">
