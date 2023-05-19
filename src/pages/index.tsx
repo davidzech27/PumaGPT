@@ -143,7 +143,7 @@ const Home: NextPage = () => {
 							} flex items-center justify-center`}
 						>
 							<div
-								className={`relative cursor-default px-2 text-center text-xs font-semibold md:text-xl ${
+								className={`relative cursor-default px-2 text-center text-sm font-semibold md:text-xl ${
 									typeof navigator !== "undefined" &&
 									navigator.userAgent.includes("Safari") &&
 									!navigator.userAgent.includes("Chrome") &&
