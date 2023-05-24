@@ -97,9 +97,9 @@ const handler = async function (request: Request) {
 									? `Respond with something that sounds like it could be found in an article from Maria Carrillo High's school newspaper "The Puma Prensa" that would answer the following question:
 
 ${messages[0]}`
-									: `Respond with something that sounds like it could be found in an article from Maria Carrillo High's school newspaper "The Puma Prensa" that would answer the final question in the following:
+									: `${messages.join("\n\n")}
 
-${messages.join("\n\n")}`,
+Respond with something that sounds like it could be found in an article from Maria Carrillo High's school newspaper "The Puma Prensa" that would answer the final question in the above conversation.`,
 						},
 					],
 					model: "gpt-3.5-turbo",
@@ -259,8 +259,8 @@ ${messages[0]}`,
 									controller.close()
 
 									console.log("Messages: ", messages)
-									console.log("Response: ", streamedContent)
 									console.log("Predicted response: ", predictedAnswer)
+									console.log("Response: ", streamedContent)
 									console.log(
 										"Unfiltered articles: ",
 										articlesUnfiltered.map((article) => article.title)
