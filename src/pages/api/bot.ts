@@ -171,11 +171,11 @@ Here are some relevant articles from Maria Carrillo High's school newspaper, "Th
 
 ${articlesString}
 
-Use these articles to respond to the following:
+Use these articles to respond to a user with the following query:
 
 ${messages[0]}
 
-Cite specific articles, including their authors. Phrase your responses very interestingly, including much detail, as though you are very knowledgable about Maria Carrillo High.`,
+Cite specific articles, including their authors. If you can't find information on a particular topic, be transparent about it and ask for more context to "aid you in your search for relevant articles". Phrase your responses very interestingly, including much detail, as though you are very knowledgable about Maria Carrillo High.`,
 							},
 					  ]
 					: [
@@ -191,7 +191,7 @@ Here are some relevant articles from Maria Carrillo High's school newspaper, "Th
 
 ${articlesString}
 
-Use these articles to continue the conversation that follows. Cite specific articles, including their authors. Be transparent when you can't find information on a particular topic. Phrase your responses very interestingly, including much detail, as though you are very knowledgable about Maria Carrillo High. Here's the user's first message:
+Use these articles to respond to the user in the conversation that follows. Cite specific articles, including their authors. If you can't find information on a particular topic, be transparent about it and ask for more context to "aid you in your search for relevant articles". Phrase your responses very interestingly, including much detail, as though you are very knowledgable about Maria Carrillo High. Here's the user's first message:
 
 ${messages[0]}`,
 							},
