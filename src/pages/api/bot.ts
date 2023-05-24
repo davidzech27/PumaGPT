@@ -94,17 +94,17 @@ const handler = async function (request: Request) {
 							role: "user",
 							content:
 								messages.length === 1
-									? `Respond with something that sounds like it could be found in an article from Maria Carrillo High's school newspaper "The Puma Prensa" that would answer the following question:
+									? `Respond with something that sounds like it could hypothetically be found in an article from Maria Carrillo High's school newspaper "The Puma Prensa" that would answer the following question:
 
 ${messages[0]}`
 									: `${messages.join("\n\n")}
 
-Respond with something that sounds like it could be found in an article from Maria Carrillo High's school newspaper "The Puma Prensa" that would answer the final question in the above conversation.`,
+Respond with something that sounds like it could hypothetically be found in an article from Maria Carrillo High's school newspaper "The Puma Prensa" that would answer the final question in the above conversation.`,
 						},
 					],
 					model: "gpt-3.5-turbo",
 					temperature: 0,
-					max_tokens: 200,
+					max_tokens: 100,
 				}),
 			})
 		).json()) as { choices: [{ message: { content: string } }] }
@@ -171,7 +171,7 @@ Here are some relevant articles from Maria Carrillo High's school newspaper, "Th
 
 ${articlesString}
 
-Use these articles to respond to a user with the following query:
+Using these articles, respond to a user with the following query:
 
 ${messages[0]}
 
@@ -191,7 +191,7 @@ Here are some relevant articles from Maria Carrillo High's school newspaper, "Th
 
 ${articlesString}
 
-Use these articles to respond to the user in the conversation that follows. Cite specific articles, including their authors. If you can't find information on a particular topic, be transparent about it and ask for more context to "aid you in your search for relevant articles". Phrase your responses very interestingly, including much detail, as though you are very knowledgable about Maria Carrillo High. Here's the user's first message:
+Using these articles, respond to the user in the conversation that follows. Cite specific articles, including their authors. If you can't find information on a particular topic, be transparent about it and ask for more context to "aid you in your search for relevant articles". Phrase your responses very interestingly, including much detail, as though you are very knowledgable about Maria Carrillo High. Here's the user's first message:
 
 ${messages[0]}`,
 							},
